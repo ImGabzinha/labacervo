@@ -1,0 +1,3501 @@
+{
+  "_": {
+    "postman_id": "6569b6c2-82f8-4954-a06f-2efc3dca9cb4"
+  },
+  "item": [
+    {
+      "id": "25dd6656-a108-4ec8-ac31-66a1142739fd",
+      "name": "01 · Categoria",
+      "item": [
+        {
+          "id": "5dd382fd-367f-4c42-8b4e-a41772137142",
+          "name": "Criar categoria",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Microscopia {{rodada}}\",\n  \"descricao\": \"Observação de lâminas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "71751888-f0c2-4678-ae32-d5a1ea73142b",
+              "name": "201 · Criar categoria",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Microscopia ad2c412d\",\n  \"descricao\": \"Observação de lâminas\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Location",
+                  "value": "/api/categorias/1"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:19 GMT"
+                }
+              ],
+              "body": "{\"descricao\":\"Observação de lâminas\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "29cd0717-31cf-4e60-aeae-9a7fb5dc4db6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"rodada\", pm.variables.replaceIn(\"{{$guid}}\").slice(0, 8));",
+                  "const prazoDaRodada = new Date();",
+                  "prazoDaRodada.setDate(prazoDaRodada.getDate() + 7);",
+                  "pm.collectionVariables.set(\"prazo\", prazoDaRodada.toISOString().slice(0, 10));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "e7f9f4dd-cda2-4979-b0fc-30091608986e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"categoriaId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f051c482-544d-4395-9c52-63ece4b32ec4",
+          "name": "Listar registros",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "4d2f9cba-0939-4804-808a-fe01eb64324a",
+              "name": "200 · Listar registros",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:19 GMT"
+                }
+              ],
+              "body": "[{\"descricao\":\"Observação de lâminas\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a0b18d86-7756-4f05-9388-86c919d89f94",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"categoriaId\"))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "32886b15-8340-463f-8241-f34a1b12df80",
+          "name": "Buscar pelo ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias",
+                "{{categoriaId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "ee899b9d-7057-4b26-9102-c35838509f3a",
+              "name": "200 · Buscar pelo ID",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:19 GMT"
+                }
+              ],
+              "body": "{\"descricao\":\"Observação de lâminas\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a11a681a-1b6e-42d3-ae4a-3b0a016bad82",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get(\"categoriaId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "4f2b4b15-c1f3-403b-9523-635700a2dfe6",
+          "name": "Atualizar cadastro",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias",
+                "{{categoriaId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Microscopia {{rodada}}\",\n  \"descricao\": \"Microscopia óptica\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "03a00eb0-6136-4bfc-8116-f64a112f5d91",
+              "name": "200 · Atualizar cadastro",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Microscopia ad2c412d\",\n  \"descricao\": \"Microscopia óptica\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:19 GMT"
+                }
+              ],
+              "body": "{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "784cf2c6-c358-43b1-b033-e5178c7bbe32",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().descricao).to.eql(\"Microscopia óptica\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "13cf2797-fc1c-4ffb-a768-b2a63f4c4190",
+      "name": "02 · Laboratório",
+      "item": [
+        {
+          "id": "0c2ec21e-4e21-4bf9-973f-80c2c9bc5572",
+          "name": "Criar laboratorio",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "laboratorios"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Biologia {{rodada}}\",\n  \"sala\": \"B12\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "a5a81473-4393-4faa-bb2c-e49382e2d2bc",
+              "name": "201 · Criar laboratorio",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "laboratorios"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Biologia ad2c412d\",\n  \"sala\": \"B12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Location",
+                  "value": "/api/laboratorios/1"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B12\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "54fed48c-83ba-4a6b-b43f-a09e49e7b70f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"laboratorioId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "5a10c280-b1bc-404f-b6fa-f6433a0440ad",
+          "name": "Listar registros",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "laboratorios"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "0132bbe9-c02c-48d7-ae2d-4d56fb9cb13b",
+              "name": "200 · Listar registros",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "laboratorios"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "[{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B12\"}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "9421eb73-5e38-43b6-9866-99df72f329a4",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"laboratorioId\"))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f327c894-78dc-49c9-99f2-5c6aa2fa98a8",
+          "name": "Buscar pelo ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "laboratorios",
+                "{{laboratorioId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "26eb7a1c-cc83-478a-81eb-bbfd90bb8a8b",
+              "name": "200 · Buscar pelo ID",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "laboratorios",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B12\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "90544eb7-8d7b-471a-b157-c449d1f47b83",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get(\"laboratorioId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "bc091d88-2826-432d-affd-06a1465f1494",
+          "name": "Atualizar cadastro",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "laboratorios",
+                "{{laboratorioId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Biologia {{rodada}}\",\n  \"sala\": \"B14\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "3b6e357e-38cd-476b-8582-214516956300",
+              "name": "200 · Atualizar cadastro",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "laboratorios",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Biologia ad2c412d\",\n  \"sala\": \"B14\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "aee13756-0f8e-4df9-b428-6fcaf89311d8",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().sala).to.eql(\"B14\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "e58a52ae-a3b0-4c43-9131-2974aa9b0afd",
+      "name": "03 · Solicitante",
+      "item": [
+        {
+          "id": "bdac9c90-d7df-426c-8177-4c4dbe7ad2a4",
+          "name": "Criar solicitante",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "solicitantes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Exemplo\",\n  \"matricula\": \"DEMO-{{rodada}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "359b3f6a-55db-4b4e-860b-a5762f156ffa",
+              "name": "201 · Criar solicitante",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "solicitantes"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Ana Exemplo\",\n  \"matricula\": \"DEMO-ad2c412d\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Location",
+                  "value": "/api/solicitantes/1"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Exemplo\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "8f3b5a83-a8f5-4ef8-b47f-7029cb18b09e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"solicitanteId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f521366a-395f-42ce-99b8-9dabcdcc5e46",
+          "name": "Listar registros",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "solicitantes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "6495d9c8-5283-44db-8c25-fbae0453835d",
+              "name": "200 · Listar registros",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "solicitantes"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "[{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Exemplo\"}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c4786c51-9ced-4764-b68d-4d79bb9f0b2e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"solicitanteId\"))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "e057c8bc-0656-4f8c-85bb-8bd2bd34fbdb",
+          "name": "Buscar pelo ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "solicitantes",
+                "{{solicitanteId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "24663c0c-38e7-4d48-89ba-6af39564aafe",
+              "name": "200 · Buscar pelo ID",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "solicitantes",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Exemplo\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "347e840a-d3eb-497b-ab18-ce280f385e5b",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get(\"solicitanteId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "fefd5831-70ee-4153-ba90-86e3b2d48943",
+          "name": "Atualizar cadastro",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "solicitantes",
+                "{{solicitanteId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Souza Exemplo\",\n  \"matricula\": \"DEMO-{{rodada}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "3ccfe62d-13f2-4384-a3ca-578708139325",
+              "name": "200 · Atualizar cadastro",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "solicitantes",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Ana Souza Exemplo\",\n  \"matricula\": \"DEMO-ad2c412d\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4661c81b-19ed-4d48-86bf-0d85a3a3acfd",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().nome).to.eql(\"Ana Souza Exemplo\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9dd01a48-5cdd-4f45-9691-d1f848a545c4",
+      "name": "04 · Equipamento",
+      "item": [
+        {
+          "id": "bbe15ca9-b407-465c-aff6-088cf3b11e95",
+          "name": "Criar equipamento",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Microscópio binocular\",\n  \"patrimonio\": \"MIC-{{rodada}}\",\n  \"categoriaId\": {{categoriaId}},\n  \"laboratorioId\": {{laboratorioId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "b563a2f0-79ee-4dcb-81ba-9e2dc16ffa81",
+              "name": "201 · Criar equipamento",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Microscópio binocular\",\n  \"patrimonio\": \"MIC-ad2c412d\",\n  \"categoriaId\": 1,\n  \"laboratorioId\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Location",
+                  "value": "/api/equipamentos/1"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio binocular\",\"patrimonio\":\"MIC-ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "f542e95c-a749-42e0-840f-def6a9ca69b5",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"equipamentoId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b5f51688-1c5d-4401-bbb3-1e3ac1e61bad",
+          "name": "Listar registros",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "656b6cbc-1692-46c4-af67-80388240ba5b",
+              "name": "200 · Listar registros",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:20 GMT"
+                }
+              ],
+              "body": "[{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio binocular\",\"patrimonio\":\"MIC-ad2c412d\"}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0eb193fa-7a6b-49e1-a1b3-d7e2e3814a73",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"equipamentoId\"))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "da343585-c0e7-48b3-bcba-d4a2586fe0b3",
+          "name": "Buscar pelo ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "{{equipamentoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "af8ab589-c1d0-48fb-aae9-16a084c1577e",
+              "name": "200 · Buscar pelo ID",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio binocular\",\"patrimonio\":\"MIC-ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2fdc2572-0d55-466c-ba2d-a6555a353d12",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get(\"equipamentoId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "796d3667-18e5-423a-892d-c6a1bb6237e9",
+          "name": "Atualizar cadastro",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "{{equipamentoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Microscópio óptico binocular\",\n  \"patrimonio\": \"MIC-{{rodada}}\",\n  \"categoriaId\": {{categoriaId}},\n  \"laboratorioId\": {{laboratorioId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "1df62300-3a9f-475c-8462-2ddbb25c95d6",
+              "name": "200 · Atualizar cadastro",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Microscópio óptico binocular\",\n  \"patrimonio\": \"MIC-ad2c412d\",\n  \"categoriaId\": 1,\n  \"laboratorioId\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "eb54fe89-5019-4857-af22-943c2dcff520",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().nome).to.eql(\"Microscópio óptico binocular\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "7b9915c1-0a81-4e6f-a724-fba83d58accb",
+      "name": "05 · Retirada",
+      "item": [
+        {
+          "id": "df23bc3a-f80d-4aef-82e0-1db3621ac94d",
+          "name": "Criar emprestimo",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipamentoId\": {{equipamentoId}},\n  \"solicitanteId\": {{solicitanteId}},\n  \"prazo\": \"{{prazo}}\",\n  \"observacao\": \"Aula de citologia\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "fb82b574-d25c-499b-b189-2ecf4f2975e9",
+              "name": "201 · Criar emprestimo",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"equipamentoId\": 1,\n  \"solicitanteId\": 1,\n  \"prazo\": \"2026-11-30\",\n  \"observacao\": \"Aula de citologia\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Location",
+                  "value": "/api/emprestimos/1"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "{\"devolucao\":null,\"equipamento\":{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"},\"id\":1,\"observacao\":\"Aula de citologia\",\"prazo\":\"2026-11-30\",\"retirada\":\"2026-11-23\",\"solicitante\":{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "dfd0da28-b2e4-47e2-8377-72d4768b132f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"emprestimoId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "40a3edfa-4ff3-4f29-bfe3-d3c54fc8c59e",
+          "name": "Listar registros",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "72c9ccfa-f171-4200-b9e8-bf0ebc08ed10",
+              "name": "200 · Listar registros",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "[{\"devolucao\":null,\"equipamento\":{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"},\"id\":1,\"observacao\":\"Aula de citologia\",\"prazo\":\"2026-11-30\",\"retirada\":\"2026-11-23\",\"solicitante\":{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "71003263-9198-479d-85c7-e0de922ac6ee",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"emprestimoId\"))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "999437f5-b465-4057-9225-6ff6a9494d1b",
+          "name": "Buscar pelo ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "5c0de643-88bf-4217-865a-264d2481b5d2",
+              "name": "200 · Buscar pelo ID",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "{\"devolucao\":null,\"equipamento\":{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"},\"id\":1,\"observacao\":\"Aula de citologia\",\"prazo\":\"2026-11-30\",\"retirada\":\"2026-11-23\",\"solicitante\":{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a50917a1-db89-4288-8cb4-72c6199ff962",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get(\"emprestimoId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d6fa4d76-9f0c-4665-ab8d-9dca3dcac8ff",
+          "name": "Atualizar observação da retirada",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipamentoId\": {{equipamentoId}},\n  \"solicitanteId\": {{solicitanteId}},\n  \"prazo\": \"{{prazo}}\",\n  \"observacao\": \"Aula de histologia\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "353089e1-9421-48d3-b9f6-0a3cc1bc5871",
+              "name": "200 · Atualizar observação da retirada",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"equipamentoId\": 1,\n  \"solicitanteId\": 1,\n  \"prazo\": \"2026-11-30\",\n  \"observacao\": \"Aula de histologia\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "{\"devolucao\":null,\"equipamento\":{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"},\"id\":1,\"observacao\":\"Aula de histologia\",\"prazo\":\"2026-11-30\",\"retirada\":\"2026-11-23\",\"solicitante\":{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7bc9c08b-8c9c-48ad-9160-764ae299fa9b",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().observacao).to.eql(\"Aula de histologia\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "08dbde44-232a-4286-a184-877086b39893",
+      "name": "06 · Consultas e regras",
+      "item": [
+        {
+          "id": "0bf5bea6-ccb1-4afb-8170-98f4bbe5766b",
+          "name": "Disponíveis durante o empréstimo",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "disponiveis"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "laboratorioId",
+                  "value": "{{laboratorioId}}"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "type": "string",
+                  "value": "consulta",
+                  "key": "username"
+                },
+                {
+                  "type": "string",
+                  "value": "{{senhaConsulta}}",
+                  "key": "password"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "d8958c67-7ba0-4666-862f-bed41397024b",
+              "name": "200 · Disponíveis durante o empréstimo",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "disponiveis"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [
+                    {
+                      "key": "laboratorioId",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a004e614-ebb3-4726-9c5a-f9cbf2e6f02a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"equipamentoId\"))).to.be.false; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "50154aa6-f5a6-460e-ab54-4c0693e3fd48",
+          "name": "Histórico do solicitante",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "historico"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "solicitanteId",
+                  "value": "{{solicitanteId}}"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "11dce6b9-effd-4f65-b20d-275a2f6e6aff",
+              "name": "200 · Histórico do solicitante",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "historico"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [
+                    {
+                      "key": "solicitanteId",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "[{\"devolucao\":null,\"equipamento\":{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"},\"id\":1,\"observacao\":\"Aula de histologia\",\"prazo\":\"2026-11-30\",\"retirada\":\"2026-11-23\",\"solicitante\":{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "738bc3b8-07de-4e1d-9d52-77ac7204321a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json()[0].id).to.eql(Number(pm.collectionVariables.get(\"emprestimoId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "77dae16c-160a-44d9-8049-fb7c14509f6c",
+          "name": "Segunda retirada do mesmo patrimônio",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipamentoId\": {{equipamentoId}},\n  \"solicitanteId\": {{solicitanteId}},\n  \"prazo\": \"{{prazo}}\",\n  \"observacao\": \"Aula de citologia\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "544712cd-c9dd-4f8f-828d-7c5745e9d4c2",
+              "name": "409 · Segunda retirada do mesmo patrimônio",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"equipamentoId\": 1,\n  \"solicitanteId\": 1,\n  \"prazo\": \"2026-11-30\",\n  \"observacao\": \"Aula de citologia\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:21 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"Este equipamento já possui empréstimo em aberto.\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6b58026e-af75-499d-b64d-d7f2ca0a17fb",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().mensagem).to.include(\"em aberto\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "cae5de1c-d07d-45bb-89bf-6df111847cab",
+          "name": "Impedir exclusão de retirada aberta",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "90361f9b-95f9-4815-b623-d4aee1f13ebc",
+              "name": "409 · Impedir exclusão de retirada aberta",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"Registre a devolução antes de excluir.\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "fe116365-8483-4c06-8688-b842c8726dfb",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "51d18e4e-63af-440f-aa0e-6e0e690405f4",
+          "name": "Prazo anterior à retirada",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipamentoId\": {{equipamentoId}},\n  \"solicitanteId\": {{solicitanteId}},\n  \"prazo\": \"2000-01-01\",\n  \"observacao\": \"Aula de citologia\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "a6b3c393-267c-4603-95b3-ef2aca654889",
+              "name": "409 · Prazo anterior à retirada",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"equipamentoId\": 1,\n  \"solicitanteId\": 1,\n  \"prazo\": \"2000-01-01\",\n  \"observacao\": \"Aula de citologia\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"O prazo deve ser igual ou posterior à retirada.\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "1ebb9169-9718-4e38-b0e8-1099f7f4f313",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "7778fb17-2641-4d2a-b3c9-f113613d72f7",
+          "name": "Preservar categoria vinculada",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias",
+                "{{categoriaId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "664fac24-c023-4279-bb77-da14e68acd30",
+              "name": "409 · Preservar categoria vinculada",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"Existe um valor único repetido ou o registro possui vínculos que impedem a operação.\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b29a4fe4-f733-46af-801c-f0a03190a9f7",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "8ece808e-ba3f-47c5-a433-e945a008a3ce",
+      "name": "07 · Validação e acesso",
+      "item": [
+        {
+          "id": "5a84a69f-b28d-42c4-86af-69ec84dfa0a4",
+          "name": "Campo obrigatório vazio",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \" \",\n  \"descricao\": \"Controle\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "0e1bb2ab-def2-46f2-87b1-fcb806b364e7",
+              "name": "400 · Campo obrigatório vazio",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \" \",\n  \"descricao\": \"Controle\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"campos\":{\"nome\":\"must not be blank\"},\"mensagem\":\"Confira os campos informados.\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "32b8c8e3-4ff3-416e-96c7-060624b9ed4a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().campos).to.have.property(\"nome\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "736fa313-2982-4277-858b-699e263ab871",
+          "name": "ID inexistente",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias",
+                "9223372036854775807"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "1b6db7b6-0d04-4af2-be06-6b96d4a25c8e",
+              "name": "404 · ID inexistente",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias",
+                    "9223372036854775807"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"Categoria de ID 9223372036854775807 não encontrado(a).\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "5bc77e23-11de-46b5-be67-59db2b7236a9",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b5562fab-d4b3-4069-98cf-3b8555a231e9",
+          "name": "Consulta sem credenciais",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "f1344350-cffb-4233-b06e-b40e2aeece5f",
+              "name": "401 · Consulta sem credenciais",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "WWW-Authenticate",
+                  "value": "Basic realm=\"Realm\", charset=\"UTF-8\""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"timestamp\":\"2026-11-23T19:01:22.460Z\",\"status\":401,\"error\":\"Unauthorized\",\"path\":\"/api/equipamentos\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "81536b14-b863-4507-a603-bb43b4d6be63",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "8fed1424-9693-4f61-922c-c337e3d6df80",
+          "name": "Consulta autenticada",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "{{equipamentoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "type": "string",
+                  "value": "consulta",
+                  "key": "username"
+                },
+                {
+                  "type": "string",
+                  "value": "{{senhaConsulta}}",
+                  "key": "password"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "d927488b-0d6a-42e0-859c-3a390362563e",
+              "name": "200 · Consulta autenticada",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d4e65446-efa0-42fb-867c-71eecb5773fc",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "dd2f8f91-53df-4063-9ee6-14f42e06eaf0",
+          "name": "Leitor tenta alterar cadastro",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "{{equipamentoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Microscópio binocular\",\n  \"patrimonio\": \"MIC-{{rodada}}\",\n  \"categoriaId\": {{categoriaId}},\n  \"laboratorioId\": {{laboratorioId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "type": "string",
+                  "value": "consulta",
+                  "key": "username"
+                },
+                {
+                  "type": "string",
+                  "value": "{{senhaConsulta}}",
+                  "key": "password"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "76759ff6-7f62-4565-ae8f-0b073b087579",
+              "name": "403 · Leitor tenta alterar cadastro",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Microscópio binocular\",\n  \"patrimonio\": \"MIC-ad2c412d\",\n  \"categoriaId\": 1,\n  \"laboratorioId\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"timestamp\":\"2026-11-23T19:01:22.628Z\",\"status\":403,\"error\":\"Forbidden\",\"path\":\"/api/equipamentos/1\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e9c89fa9-69be-486b-9e52-9da0daf97467",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "f21a7bb8-67f8-43da-8caf-9b2d08ef4f1b",
+      "name": "08 · Devolução e encerramento",
+      "item": [
+        {
+          "id": "5247f285-989b-4c63-a861-e9fe1eb25a28",
+          "name": "Registrar devolução",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}",
+                "devolucao"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "2c273a80-17a3-491e-9670-e4ae424629da",
+              "name": "200 · Registrar devolução",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1",
+                    "devolucao"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"devolucao\":\"2026-11-23\",\"equipamento\":{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"},\"id\":1,\"observacao\":\"Aula de histologia\",\"prazo\":\"2026-11-30\",\"retirada\":\"2026-11-23\",\"solicitante\":{\"id\":1,\"matricula\":\"DEMO-ad2c412d\",\"nome\":\"Ana Souza Exemplo\"}}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "8dc56608-3c10-4dcc-9cb8-275d8e56358d",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().devolucao).to.match(/^\\d{4}-\\d{2}-\\d{2}$/); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "0a493374-a610-4211-bb46-e1588d42b428",
+          "name": "Repetir devolução",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}",
+                "devolucao"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "8dc1c9fb-4595-4910-bb9d-58f99f623a43",
+              "name": "409 · Repetir devolução",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1",
+                    "devolucao"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST"
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"Este empréstimo já foi devolvido.\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "900b7502-46e5-4bf2-bc7c-586cdabf2359",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().mensagem).to.include(\"já foi devolvido\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "ea88cc0d-d311-450a-97c4-350cc5ca452e",
+          "name": "Disponíveis após devolver",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "disponiveis"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "laboratorioId",
+                  "value": "{{laboratorioId}}"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "fb7a316a-f7a7-411a-bf2b-a7519d23c236",
+              "name": "200 · Disponíveis após devolver",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "disponiveis"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [
+                    {
+                      "key": "laboratorioId",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "[{\"categoria\":{\"descricao\":\"Microscopia óptica\",\"id\":1,\"nome\":\"Microscopia ad2c412d\"},\"id\":1,\"laboratorio\":{\"id\":1,\"nome\":\"Biologia ad2c412d\",\"sala\":\"B14\"},\"nome\":\"Microscópio óptico binocular\",\"patrimonio\":\"MIC-ad2c412d\"}]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "815e0cdb-1eda-41c6-ada6-258d137392a7",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Conteúdo da resposta\", () => { pm.expect(pm.response.json().some(x => x.id == pm.collectionVariables.get(\"equipamentoId\"))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "8fe12ee4-abf7-46e8-b6f6-349c34493dd4",
+          "name": "Excluir emprestimo",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "emprestimos",
+                "{{emprestimoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "2e446eef-6795-4c5b-8119-bb582561cb6d",
+              "name": "204 · Excluir emprestimo",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "emprestimos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:22 GMT"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "9dc83834-231c-4f3f-81ae-ec002ea150ef",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c52149aa-edcb-4cd6-aff2-d70560758a6b",
+          "name": "Excluir equipamento",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "{{equipamentoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "691d5ae5-4214-4feb-8783-23abd3eb45ee",
+              "name": "204 · Excluir equipamento",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:23 GMT"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "131f43d4-bbe5-48d7-accd-2135f9f79c09",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "464b6c1c-9f8f-4372-98ce-d249beac868c",
+          "name": "Excluir solicitante",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "solicitantes",
+                "{{solicitanteId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "e149dc45-90fe-48c9-917b-6c86e7c226f0",
+              "name": "204 · Excluir solicitante",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "solicitantes",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:23 GMT"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "11b6dda6-7700-404d-bd42-693391e8025a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c9ca041d-e197-4149-ae69-d193fcb7f926",
+          "name": "Excluir laboratorio",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "laboratorios",
+                "{{laboratorioId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "e6fbb585-3fd1-4b46-b59a-49e74e593ce5",
+              "name": "204 · Excluir laboratorio",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "laboratorios",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:23 GMT"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "81338d0c-8721-424a-b046-e098b33626cd",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c667bf20-9e89-4043-83b9-5d4381fc2139",
+          "name": "Excluir categoria",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categorias",
+                "{{categoriaId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "94c70cd3-d7f9-41aa-9bdd-b8243543427c",
+              "name": "204 · Excluir categoria",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "categorias",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "DELETE"
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:23 GMT"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c756a459-c8af-4fb1-b189-7d68931eea4f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "eb597777-c21e-4716-a386-43e1ccea5ee9",
+          "name": "Confirmar exclusão",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "equipamentos",
+                "{{equipamentoId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "63ccab53-5cc9-42b9-a402-c2a25db0a14f",
+              "name": "404 · Confirmar exclusão",
+              "originalRequest": {
+                "url": {
+                  "protocol": "http",
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "equipamentos",
+                    "1"
+                  ],
+                  "host": [
+                    "localhost"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:01:23 GMT"
+                }
+              ],
+              "body": "{\"mensagem\":\"Equipamento de ID 1 não encontrado(a).\"}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ca25c014-dc1d-4cdb-a10d-00a1341e3b95",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "type": "string",
+        "value": "tecnico",
+        "key": "username"
+      },
+      {
+        "type": "string",
+        "value": "{{senhaTecnico}}",
+        "key": "password"
+      }
+    ]
+  },
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8080",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "tecnico_demo",
+      "key": "senhaTecnico"
+    },
+    {
+      "type": "string",
+      "value": "consulta_demo",
+      "key": "senhaConsulta"
+    },
+    {
+      "type": "string",
+      "value": "demo",
+      "key": "rodada"
+    },
+    {
+      "type": "string",
+      "value": "2099-01-01",
+      "key": "prazo"
+    },
+    {
+      "type": "string",
+      "value": "1",
+      "key": "categoriaId"
+    },
+    {
+      "type": "string",
+      "value": "1",
+      "key": "laboratorioId"
+    },
+    {
+      "type": "string",
+      "value": "1",
+      "key": "solicitanteId"
+    },
+    {
+      "type": "string",
+      "value": "1",
+      "key": "equipamentoId"
+    },
+    {
+      "type": "string",
+      "value": "1",
+      "key": "emprestimoId"
+    }
+  ],
+  "info": {
+    "_postman_id": "6569b6c2-82f8-4954-a06f-2efc3dca9cb4",
+    "name": "LabAcervo | Empréstimos de laboratório",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Execute as pastas de 01 a 08 na ordem. Dados fictícios. A primeira criação inicializa as variáveis da rodada.",
+      "type": "text/plain"
+    }
+  }
+}
